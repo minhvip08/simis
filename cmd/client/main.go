@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/minhvip08/simis/app/utils"
+	"github.com/minhvip08/simis/internal/utils"
 )
 
 func main() {

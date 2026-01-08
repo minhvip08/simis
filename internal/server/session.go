@@ -5,12 +5,12 @@ import (
 	"io"
 	"strings"
 
-	"github.com/minhvip08/simis/app/command"
-	"github.com/minhvip08/simis/app/config"
-	"github.com/minhvip08/simis/app/connection"
-	"github.com/minhvip08/simis/app/constants"
-	"github.com/minhvip08/simis/app/logger"
-	"github.com/minhvip08/simis/app/utils"
+	"github.com/minhvip08/simis/internal/command"
+	"github.com/minhvip08/simis/internal/config"
+	"github.com/minhvip08/simis/internal/connection"
+	"github.com/minhvip08/simis/internal/constants"
+	"github.com/minhvip08/simis/internal/logger"
+	"github.com/minhvip08/simis/internal/utils"
 )
 
 func Handle(conn *connection.RedisConnection) {

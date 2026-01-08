@@ -1,6 +1,6 @@
 package executor
 
-import "github.com/minhvip08/simis/app/connection"
+import "github.com/minhvip08/simis/internal/connection"
 
 type WaitingCommand struct {
 	Command     *connection.Command

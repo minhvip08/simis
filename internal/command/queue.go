@@ -3,8 +3,8 @@ package command
 import (
 	"sync"
 
-	"github.com/minhvip08/simis/app/connection"
-	"github.com/minhvip08/simis/app/constants"
+	"github.com/minhvip08/simis/internal/connection"
+	"github.com/minhvip08/simis/internal/constants"
 )
 
 var (

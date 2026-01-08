@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"github.com/minhvip08/simis/app/connection"
-	"github.com/minhvip08/simis/app/utils"
+	"github.com/minhvip08/simis/internal/connection"
+	"github.com/minhvip08/simis/internal/utils"
 )
 
 type PingHandler struct {

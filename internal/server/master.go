@@ -5,9 +5,9 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/minhvip08/simis/app/config"
-	"github.com/minhvip08/simis/app/connection"
-	"github.com/minhvip08/simis/app/logger"
+	"github.com/minhvip08/simis/internal/config"
+	"github.com/minhvip08/simis/internal/connection"
+	"github.com/minhvip08/simis/internal/logger"
 )
 
 type MasterServer struct {

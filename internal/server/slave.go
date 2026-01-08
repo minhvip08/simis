@@ -3,7 +3,7 @@ package server
 import (
 	"os"
 
-	"github.com/minhvip08/simis/app/config"
+	"github.com/minhvip08/simis/internal/config"
 )
 
 type SlaveServer struct {

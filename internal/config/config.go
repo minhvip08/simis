@@ -6,7 +6,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/minhvip08/simis/app/utils"
+	"github.com/minhvip08/simis/internal/utils"
 )
 
 type Config struct {

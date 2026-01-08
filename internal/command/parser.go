@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/minhvip08/simis/app/utils"
+	"github.com/minhvip08/simis/internal/utils"
 )
 
 type ParseCommand struct {

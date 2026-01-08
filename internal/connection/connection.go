@@ -4,9 +4,9 @@ import (
 	"net"
 
 	"github.com/google/uuid"
-	err "github.com/minhvip08/simis/app/error"
-	"github.com/minhvip08/simis/app/logger"
-	"github.com/minhvip08/simis/app/utils"
+	err "github.com/minhvip08/simis/internal/error"
+	"github.com/minhvip08/simis/internal/logger"
+	"github.com/minhvip08/simis/internal/utils"
 )
 
 type RedisConnection struct {

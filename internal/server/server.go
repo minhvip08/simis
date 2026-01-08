@@ -1,6 +1,6 @@
 package server
 
-import "github.com/minhvip08/simis/app/config"
+import "github.com/minhvip08/simis/internal/config"
 
 type Server interface {
 	Start() error

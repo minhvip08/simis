@@ -1,6 +1,6 @@
 package handler
 
-import "github.com/minhvip08/simis/app/connection"
+import "github.com/minhvip08/simis/internal/connection"
 
 // Handler interface defines the Execute method for command handlers
 type Handler interface {

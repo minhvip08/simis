@@ -5,10 +5,10 @@ import (
 	"net"
 	"os"
 
-	"github.com/minhvip08/simis/app/command"
-	"github.com/minhvip08/simis/app/config"
-	"github.com/minhvip08/simis/app/executor"
-	"github.com/minhvip08/simis/app/server"
+	"github.com/minhvip08/simis/internal/command"
+	"github.com/minhvip08/simis/internal/config"
+	"github.com/minhvip08/simis/internal/executor"
+	"github.com/minhvip08/simis/internal/server"
 )
 
 // Ensures gofmt doesn't remove the "net" and "os" imports in stage 1 (feel free to remove this!)

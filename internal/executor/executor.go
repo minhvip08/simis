@@ -1,11 +1,11 @@
 package executor
 
 import (
-	"github.com/minhvip08/simis/app/command"
-	"github.com/minhvip08/simis/app/connection"
-	"github.com/minhvip08/simis/app/handler"
-	"github.com/minhvip08/simis/app/logger"
-	"github.com/minhvip08/simis/app/utils"
+	"github.com/minhvip08/simis/internal/command"
+	"github.com/minhvip08/simis/internal/connection"
+	"github.com/minhvip08/simis/internal/handler"
+	"github.com/minhvip08/simis/internal/logger"
+	"github.com/minhvip08/simis/internal/utils"
 )
 
 type Executor struct {
