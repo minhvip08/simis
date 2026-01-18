@@ -151,8 +151,8 @@ func ToRespInt(n int) string {
 	return fmt.Sprintf(":%d\r\n", n)
 }
 
-// ToArray converts a slice of strings to a RESP Array of Bulk Strings.
-func ToArray(elements []string) string {
+// ToRespArray converts a slice of strings to a RESP Array of Bulk Strings.
+func ToRespArray(elements []string) string {
 	if elements == nil {
 		return "*-1\r\n"
 	}

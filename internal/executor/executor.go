@@ -45,11 +45,17 @@ func (e *Executor) executeCommand(cmd *connection.Command) {
 
 	result := cmdHandler.Execute(cmd)
 
+	if result.BlockingTimeout >= 0 {
+		e.blockingCommandManager.AddWaitingCommand(result.BlockingTimeout, cmd, result.WaitingKeys)
+		return
+	}
+
+	e.blockingCommandManager.UnblockCommandsWaitingForKey(result.ModifiedKeys)
+
 	if result.Error != nil {
 		cmd.Response <- utils.ToError(result.Error.Error())
 		return
 	}
-
+	// TODO: Handle modified keys for persistence and replication
 	cmd.Response <- result.Response
-	// TODO: Handle other commands
 }

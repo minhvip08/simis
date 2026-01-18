@@ -75,7 +75,7 @@ func HandleRequests(conn *connection.RedisConnection, buffer string) string {
 
 		cmdArray := []string{cmd.Name}
 		cmdArray = append(cmdArray, cmd.Args...)
-		respCommand := utils.ToArray(cmdArray)
+		respCommand := utils.ToRespArray(cmdArray)
 
 		if conn.IsMaster() {
 			cfg := config.GetInstance()

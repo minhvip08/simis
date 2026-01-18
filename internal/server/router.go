@@ -21,7 +21,7 @@ func Route(conn *connection.RedisConnection, cmdName string, args []string) {
 
 	// Special case: PING in pubsub mode returns an array
 	if cmdName == "PING" && conn.IsInPubSubMode() {
-		conn.SendResponse(utils.ToArray([]string{"pong", ""}))
+		conn.SendResponse(utils.ToRespArray([]string{"pong", ""}))
 		return
 	}
 

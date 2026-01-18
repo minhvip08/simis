@@ -16,3 +16,7 @@ const (
 var PubSubCommands = map[string]bool{
 	string(CommandPing): true,
 }
+
+const (
+	OKResponse = "OK"
+)

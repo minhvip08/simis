@@ -45,7 +45,7 @@ func main() {
 		}
 
 		// You already have this function implemented
-		respData := []byte(utils.ToArray(strings.Fields(line)))
+		respData := []byte(utils.ToRespArray(strings.Fields(line)))
 
 		// Send raw RESP bytes
 		_, err = conn.Write(respData)
