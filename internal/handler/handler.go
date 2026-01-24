@@ -34,4 +34,8 @@ var Handlers = map[string]Handler{
 	"LLEN":   &LLENHandler{},
 	"LPOP":   &LPopHandler{},
 	"BLPOP":  &BLPopHandler{},
+	"TYPE":   &TypeHandler{},
+	"XADD":   &XAddHandler{},
+	"XRANGE": &XRangeHandler{},
+	"XREAD":  &XReadHandler{},
 }

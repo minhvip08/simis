@@ -152,3 +152,13 @@ func (store *KVStore) GetAllKeys() []string {
 	})
 	return keys
 }
+
+func (store *KVStore) LoadOrStoreStream(key string) (*ds.Stream, bool) {
+	kvObj := ds.RedisObject{Value: ds.NewStream(), TTL: nil}
+	val, loaded := store.syncMap.LoadOrStore(key, &kvObj)
+	stream, ok := ds.AsStream(val.Get())
+	if !ok {
+		return nil, false
+	}
+	return stream, loaded
+}
