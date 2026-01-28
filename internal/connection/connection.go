@@ -82,10 +82,6 @@ func (conn *RedisConnection) SendResponse(message string) {
 	}
 }
 
-func (conn *RedisConnection) IsInTransaction() bool {
-	return conn.inTransaction
-}
-
 func (conn *RedisConnection) GetAddress() string {
 	return conn.conn.RemoteAddr().String()
 }
@@ -101,4 +97,33 @@ func (conn *RedisConnection) IsMaster() bool {
 // SendError sends an error response to the client
 func (conn *RedisConnection) SendError(errMsg string) {
 	conn.SendResponse(utils.ToError(errMsg))
+}
+
+func (conn *RedisConnection) IsInTransaction() bool {
+	return conn.inTransaction
+}
+
+func (conn *RedisConnection) QueuedCommands() []Command {
+	return conn.queuedCommands
+}
+
+func (conn *RedisConnection) StartTransaction() (string, error) {
+	if conn.IsInTransaction() {
+		return "", err.ErrAlreadyInTransaction
+	}
+	conn.inTransaction = true
+	return utils.ToSimpleString("OK"), nil
+}
+
+func (conn *RedisConnection) EndTransaction() {
+	conn.inTransaction = false
+}
+
+func (conn *RedisConnection) DiscardTransaction() (string, error) {
+	if !conn.IsInTransaction() {
+		return "", err.ErrDiscardWithoutMulti
+	}
+	conn.inTransaction = false
+	conn.queuedCommands = make([]Command, 0)
+	return utils.ToSimpleString("OK"), nil
 }

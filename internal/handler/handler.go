@@ -38,4 +38,5 @@ var Handlers = map[string]Handler{
 	"XADD":   &XAddHandler{},
 	"XRANGE": &XRangeHandler{},
 	"XREAD":  &XReadHandler{},
+	"INCR":   &IncrHandler{},
 }

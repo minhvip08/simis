@@ -51,3 +51,7 @@ func (q *Queue) CommandQueue() <-chan *connection.Command {
 func (q *Queue) TransactionQueue() <-chan *Transaction {
 	return q.transactions
 }
+
+func CreateCommand(command string, args []string) connection.Command {
+	return connection.CreateCommand(command, args...)
+}
