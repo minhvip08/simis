@@ -7,16 +7,49 @@ const (
 	DefaultTransactionQueueSize = 1000
 )
 
-type CommandType string
-
 const (
-	CommandPing CommandType = "PING"
+	CommandPING   CommandType = "PING"
+	CommandECHO   CommandType = "ECHO"
+	CommandSET    CommandType = "SET"
+	CommandGET    CommandType = "GET"
+	CommandLPUSH  CommandType = "LPUSH"
+	CommandRPUSH  CommandType = "RPUSH"
+	CommandLRANGE CommandType = "LRANGE"
+	CommandLLEN   CommandType = "LLEN"
+	CommandLPOP   CommandType = "LPOP"
+	CommandBLPOP  CommandType = "BLPOP"
+	CommandTYPE   CommandType = "TYPE"
+	CommandXADD   CommandType = "XADD"
+	CommandXRANGE CommandType = "XRANGE"
+	CommandXREAD  CommandType = "XREAD"
+	CommandINCR   CommandType = "INCR"
+	CommandINFO   CommandType = "INFO"
+	CommandMULTI  CommandType = "MULTI"
+	CommandEXEC   CommandType = "EXEC"
+	CommandDISCARD CommandType = "DISCARD"
+	CommandREPLCONF CommandType = "REPLCONF"
+	CommandPSYNC  CommandType = "PSYNC"
+	CommandWAIT   CommandType = "WAIT"
+	CommandSUBSCRIBE CommandType = "SUBSCRIBE"
+	CommandUNSUBSCRIBE CommandType = "UNSUBSCRIBE"
+	CommandPUBLISH CommandType = "PUBLISH"
 )
 
+type CommandType string
+
 var PubSubCommands = map[string]bool{
-	string(CommandPing): true,
+	string(CommandPING): true,
 }
 
 const (
 	OKResponse = "OK"
 )
+
+var WriteCommands = map[string]bool{
+	string(CommandSET):   true,
+	string(CommandLPUSH): true,
+	string(CommandRPUSH): true,
+	string(CommandLPOP):  true,
+	string(CommandXADD):  true,
+	string(CommandINCR):  true,
+}

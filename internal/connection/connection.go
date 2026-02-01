@@ -127,3 +127,11 @@ func (conn *RedisConnection) DiscardTransaction() (string, error) {
 	conn.queuedCommands = make([]Command, 0)
 	return utils.ToSimpleString("OK"), nil
 }
+
+func (conn *RedisConnection) MarkAsMaster() {
+	conn.isMaster = true
+}
+
+func (conn *RedisConnection) SetSuppressResponse(suppress bool) {
+	conn.suppressResponse = suppress
+}

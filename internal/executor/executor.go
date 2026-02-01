@@ -3,8 +3,10 @@ package executor
 import (
 	"github.com/minhvip08/simis/internal/command"
 	"github.com/minhvip08/simis/internal/connection"
+	"github.com/minhvip08/simis/internal/constants"
 	"github.com/minhvip08/simis/internal/handler"
 	"github.com/minhvip08/simis/internal/logger"
+	"github.com/minhvip08/simis/internal/replication"
 	"github.com/minhvip08/simis/internal/utils"
 )
 
@@ -28,8 +30,8 @@ func (e *Executor) Start() {
 		select {
 		case cmd := <-queue.CommandQueue():
 			e.executeCommand(cmd)
-			// TODO: handle transactions
-			// case trans := <-queue.TransactionQueue():
+		case trans := <-queue.TransactionQueue():
+			e.transactionExecutor.Execute(trans)
 		}
 	}
 }
@@ -56,6 +58,14 @@ func (e *Executor) executeCommand(cmd *connection.Command) {
 		cmd.Response <- utils.ToError(result.Error.Error())
 		return
 	}
-	// TODO: Handle modified keys for persistence and replication
+
+	if isWriteCommand(cmd.Command) {
+		replication.GetManager().PropagateCommand(cmd.Command, cmd.Args)
+	}
+
 	cmd.Response <- result.Response
+}
+
+func isWriteCommand(cmdName string) bool {
+	return constants.WriteCommands[cmdName]
 }
