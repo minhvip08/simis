@@ -23,20 +23,31 @@ func NewExecutionResult() *ExecutionResult {
 	}
 }
 
+func NewErrorResult(err error) *ExecutionResult {
+	result := NewExecutionResult()
+	result.Error = err
+	return result
+}
+
 var Handlers = map[string]Handler{
-	"PING":   &PingHandler{},
-	"ECHO":   &EchoHandler{},
-	"SET":    &SetHandler{},
-	"GET":    &GetHandler{},
-	"RPUSH":  &RPushHandler{},
-	"LRANGE": &LRangeHandler{},
-	"LPUSH":  &LPushHandler{},
-	"LLEN":   &LLENHandler{},
-	"LPOP":   &LPopHandler{},
-	"BLPOP":  &BLPopHandler{},
-	"TYPE":   &TypeHandler{},
-	"XADD":   &XAddHandler{},
-	"XRANGE": &XRangeHandler{},
-	"XREAD":  &XReadHandler{},
-	"INCR":   &IncrHandler{},
+	"PING":    &PingHandler{},
+	"ECHO":    &EchoHandler{},
+	"SET":     &SetHandler{},
+	"GET":     &GetHandler{},
+	"RPUSH":   &RPushHandler{},
+	"LRANGE":  &LRangeHandler{},
+	"LPUSH":   &LPushHandler{},
+	"LLEN":    &LLENHandler{},
+	"LPOP":    &LPopHandler{},
+	"BLPOP":   &BLPopHandler{},
+	"TYPE":    &TypeHandler{},
+	"XADD":    &XAddHandler{},
+	"XRANGE":  &XRangeHandler{},
+	"XREAD":   &XReadHandler{},
+	"INCR":    &IncrHandler{},
+	"INFO":    &InfoHandler{},
+	"CONFIG":  &ConfigHandler{},
+	"KEYS":    &KeysHandler{},
+	"BGSAVE":  &BGSaveHandler{},
+	"PUBLISH": &PublishHandler{},
 }

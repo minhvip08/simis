@@ -162,3 +162,11 @@ func (store *KVStore) LoadOrStoreStream(key string) (*ds.Stream, bool) {
 	}
 	return stream, loaded
 }
+
+// Range iterates over all key-value pairs in the store (including expired ones)
+// The function receives the key and the RedisObject pointer
+func (store *KVStore) Range(fn func(key string, val interface{}) bool) {
+	store.syncMap.Range(func(key string, val *ds.RedisObject) bool {
+		return fn(key, val)
+	})
+}

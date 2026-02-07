@@ -7,10 +7,12 @@ type SessionHandler interface {
 }
 
 var SessionHandlers = map[string]SessionHandler{
-	"MULTI":    &MultiHandler{},
-	"EXEC":     &ExecHandler{},
-	"DISCARD":  &DiscardHandler{},
-	"REPLCONF": &ReplconfHandler{},
-	"PSYNC":    &PSyncHandler{},
-	"WAIT":     &WaitHandler{},
+	"MULTI":       &MultiHandler{},
+	"EXEC":        &ExecHandler{},
+	"DISCARD":     &DiscardHandler{},
+	"REPLCONF":    &ReplconfHandler{},
+	"PSYNC":       &PSyncHandler{},
+	"WAIT":        &WaitHandler{},
+	"SUBSCRIBE":   &SubscribeHandler{},
+	"UNSUBSCRIBE": &UnsubscribeHandler{},
 }

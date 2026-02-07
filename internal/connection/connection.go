@@ -135,3 +135,11 @@ func (conn *RedisConnection) MarkAsMaster() {
 func (conn *RedisConnection) SetSuppressResponse(suppress bool) {
 	conn.suppressResponse = suppress
 }
+
+func (conn *RedisConnection) EnterPubSubMode() {
+	conn.inPubSubMode = true
+}
+
+func (conn *RedisConnection) ExitPubSubMode() {
+	conn.inPubSubMode = false
+}

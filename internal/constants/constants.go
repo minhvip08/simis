@@ -1,44 +1,47 @@
 package constants
 
 const (
-	DefaultBufferSize       = 4096
-	SmallBufferSize         = 1024
-	DefaultCommandQueueSize = 1000
+	DefaultBufferSize           = 4096
+	SmallBufferSize             = 1024
+	DefaultCommandQueueSize     = 1000
 	DefaultTransactionQueueSize = 1000
 )
 
 const (
-	CommandPING   CommandType = "PING"
-	CommandECHO   CommandType = "ECHO"
-	CommandSET    CommandType = "SET"
-	CommandGET    CommandType = "GET"
-	CommandLPUSH  CommandType = "LPUSH"
-	CommandRPUSH  CommandType = "RPUSH"
-	CommandLRANGE CommandType = "LRANGE"
-	CommandLLEN   CommandType = "LLEN"
-	CommandLPOP   CommandType = "LPOP"
-	CommandBLPOP  CommandType = "BLPOP"
-	CommandTYPE   CommandType = "TYPE"
-	CommandXADD   CommandType = "XADD"
-	CommandXRANGE CommandType = "XRANGE"
-	CommandXREAD  CommandType = "XREAD"
-	CommandINCR   CommandType = "INCR"
-	CommandINFO   CommandType = "INFO"
-	CommandMULTI  CommandType = "MULTI"
-	CommandEXEC   CommandType = "EXEC"
-	CommandDISCARD CommandType = "DISCARD"
-	CommandREPLCONF CommandType = "REPLCONF"
-	CommandPSYNC  CommandType = "PSYNC"
-	CommandWAIT   CommandType = "WAIT"
-	CommandSUBSCRIBE CommandType = "SUBSCRIBE"
+	CommandPING        CommandType = "PING"
+	CommandECHO        CommandType = "ECHO"
+	CommandSET         CommandType = "SET"
+	CommandGET         CommandType = "GET"
+	CommandLPUSH       CommandType = "LPUSH"
+	CommandRPUSH       CommandType = "RPUSH"
+	CommandLRANGE      CommandType = "LRANGE"
+	CommandLLEN        CommandType = "LLEN"
+	CommandLPOP        CommandType = "LPOP"
+	CommandBLPOP       CommandType = "BLPOP"
+	CommandTYPE        CommandType = "TYPE"
+	CommandXADD        CommandType = "XADD"
+	CommandXRANGE      CommandType = "XRANGE"
+	CommandXREAD       CommandType = "XREAD"
+	CommandINCR        CommandType = "INCR"
+	CommandINFO        CommandType = "INFO"
+	CommandMULTI       CommandType = "MULTI"
+	CommandEXEC        CommandType = "EXEC"
+	CommandDISCARD     CommandType = "DISCARD"
+	CommandREPLCONF    CommandType = "REPLCONF"
+	CommandPSYNC       CommandType = "PSYNC"
+	CommandWAIT        CommandType = "WAIT"
+	CommandSUBSCRIBE   CommandType = "SUBSCRIBE"
 	CommandUNSUBSCRIBE CommandType = "UNSUBSCRIBE"
-	CommandPUBLISH CommandType = "PUBLISH"
+	CommandPUBLISH     CommandType = "PUBLISH"
 )
 
 type CommandType string
 
 var PubSubCommands = map[string]bool{
-	string(CommandPING): true,
+	string(CommandPING):        true,
+	string(CommandSUBSCRIBE):   true,
+	string(CommandUNSUBSCRIBE): true,
+	string(CommandPUBLISH):     true,
 }
 
 const (

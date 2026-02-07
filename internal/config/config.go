@@ -26,7 +26,7 @@ type ConfigOptions struct {
 	Role          ServerRole
 	MasterAddress string // ex: 127.0.0.1 6379
 	Dir           string
-	FileName      string
+	DBFileName    string
 }
 
 var (
@@ -73,8 +73,8 @@ func Init(opts *ConfigOptions) {
 			instance.Dir = opts.Dir
 		}
 
-		if opts.FileName != "" {
-			instance.DBFileName = opts.FileName
+		if opts.DBFileName != "" {
+			instance.DBFileName = opts.DBFileName
 		}
 
 	})

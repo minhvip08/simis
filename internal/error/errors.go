@@ -31,3 +31,9 @@ var (
 var (
 	ErrFailedToLoadOrStoreStream = errors.New("failed to load or store stream")
 )
+
+var (
+	ErrInvalidRDBHeader = errors.New("invalid RDB header")
+	ErrUnexpectedEOF    = errors.New("unexpected EOF while parsing RDB")
+	ErrUnsupportedType  = errors.New("unsupported RDB value type or encoding")
+)
