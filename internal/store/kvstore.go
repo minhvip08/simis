@@ -170,3 +170,21 @@ func (store *KVStore) Range(fn func(key string, val interface{}) bool) {
 		return fn(key, val)
 	})
 }
+
+func (store *KVStore) LoadOrStoreSortedSet(key string) (*ds.SortedSet, bool) {
+	kvObj := ds.RedisObject{Value: ds.NewSortedSet(), TTL: nil}
+	val, loaded := store.syncMap.LoadOrStore(key, &kvObj)
+	sortedSet, ok := ds.AsSortedSet(val.Get())
+	if !ok {
+		return nil, false
+	}
+	return sortedSet, loaded
+}
+
+func (store *KVStore) GetSortedSet(key string) (*ds.SortedSet, bool) {
+	val, ok := store.GetValue(key)
+	if !ok {
+		return nil, false
+	}
+	return ds.AsSortedSet(val.Get())
+}

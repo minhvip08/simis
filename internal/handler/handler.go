@@ -50,4 +50,10 @@ var Handlers = map[string]Handler{
 	"KEYS":    &KeysHandler{},
 	"BGSAVE":  &BGSaveHandler{},
 	"PUBLISH": &PublishHandler{},
+	"ZADD":    &ZAddHandler{},
+	"ZRANK":   &ZRankHandler{},
+	"ZRANGE":  &ZRangeHandler{},
+	"ZCARD":   &ZCardHandler{},
+	"ZSCORE":  &ZScoreHandler{},
+	"ZREM":    &ZRemHandler{},
 }
