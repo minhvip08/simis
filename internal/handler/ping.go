@@ -15,17 +15,17 @@ func parsePing(arg []string) (*pingParams, error) {
 }
 
 func executePing(params *pingParams) *ExecutionResult {
-	return &ExecutionResult{
-		Response: utils.ToSimpleString("PONG"),
-	}
+	result := NewExecutionResult()
+	result.Response = utils.ToSimpleString("PONG")
+	return result
 }
 
 func (h *PingHandler) Execute(cmd *connection.Command) *ExecutionResult {
 	params, err := parsePing(cmd.Args)
 	if err != nil {
-		return &ExecutionResult{
-			Error: err,
-		}
+		result := NewExecutionResult()
+		result.Error = err
+		return result
 	}
 	return executePing(params)
 }
