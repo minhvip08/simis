@@ -8,6 +8,8 @@ var (
 	ErrAlreadyInTransaction    = errors.New("already in transaction")
 	ErrDiscardWithoutMulti     = errors.New("DISCARD without MULTI")
 	ErrExecWithoutMulti        = errors.New("EXEC without MULTI")
+	ErrInvalidUserPassword = errors.New("WRONGPASS invalid username-password pair or user is disabled.")
+	ErrAuthenticationRequired = errors.New("NOAUTH Authentication required.")
 )
 
 var (

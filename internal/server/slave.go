@@ -14,6 +14,8 @@ import (
 	"github.com/minhvip08/simis/internal/connection"
 	"github.com/minhvip08/simis/internal/constants"
 	"github.com/minhvip08/simis/internal/logger"
+	"github.com/minhvip08/simis/internal/rdb"
+	"github.com/minhvip08/simis/internal/store"
 	"github.com/minhvip08/simis/internal/utils"
 )
 
@@ -227,8 +229,13 @@ func (rs *SlaveServer) sendPsync(conn *connection.RedisConnection) ([]byte, erro
 
 	logger.Debug("Received RDB file from master", "size", len(binaryData))
 
-	// TODO:
-	// Parse and load the RDB data into the store
+	kvStore := store.GetInstance()
+	if err := rdb.LoadRDBIntoStore(binaryData, kvStore); err != nil {
+		logger.Error("Failed to parse RDB data from master", "error", err)
+	} else {
+		logger.Info("Successfully loaded RDB data from master")
+	}
+
 
 	return remainingData, nil
 }

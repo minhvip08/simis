@@ -3,10 +3,11 @@ package connection
 import (
 	"net"
 
-	"github.com/google/uuid"
+	"github.com/minhvip08/simis/internal/acl"
 	err "github.com/minhvip08/simis/internal/error"
 	"github.com/minhvip08/simis/internal/logger"
 	"github.com/minhvip08/simis/internal/utils"
+	"github.com/google/uuid"
 )
 
 type RedisConnection struct {
@@ -28,7 +29,16 @@ type Command struct {
 }
 
 func NewRedisConnection(conn net.Conn) *RedisConnection {
-	// TODO: ACL initialization
+	userManager := acl.GetInstance()
+	user, exists := userManager.GetUser("default")
+	if !exists {
+		userManager.SetUser(&acl.User{
+			Username: "default",
+			Flags:    []string{"nopass"},
+			Passwords: []string{},
+		})
+	}
+	
 	return &RedisConnection{
 		ID:               uuid.New().String(),
 		conn:             conn,
@@ -37,7 +47,7 @@ func NewRedisConnection(conn net.Conn) *RedisConnection {
 		suppressResponse: false,
 		isMaster:         false,
 		username:         "default", // Default user for unauthenticated connections
-		authenticated:    true,      // TODO: Set to false when ACLs are implemented
+		authenticated:    user.IsEnabled() && len(user.Passwords) == 0,
 	}
 }
 
@@ -82,18 +92,6 @@ func (conn *RedisConnection) SendResponse(message string) {
 	}
 }
 
-func (conn *RedisConnection) GetAddress() string {
-	return conn.conn.RemoteAddr().String()
-}
-
-func (conn *RedisConnection) IsInPubSubMode() bool {
-	return conn.inPubSubMode
-}
-
-func (conn *RedisConnection) IsMaster() bool {
-	return conn.isMaster
-}
-
 // SendError sends an error response to the client
 func (conn *RedisConnection) SendError(errMsg string) {
 	conn.SendResponse(utils.ToError(errMsg))
@@ -128,12 +126,24 @@ func (conn *RedisConnection) DiscardTransaction() (string, error) {
 	return utils.ToSimpleString("OK"), nil
 }
 
+func (conn *RedisConnection) SetSuppressResponse(suppress bool) {
+	conn.suppressResponse = suppress
+}
+
+func (conn *RedisConnection) IsSuppressResponse() bool {
+	return conn.suppressResponse
+}
+
 func (conn *RedisConnection) MarkAsMaster() {
 	conn.isMaster = true
 }
 
-func (conn *RedisConnection) SetSuppressResponse(suppress bool) {
-	conn.suppressResponse = suppress
+func (conn *RedisConnection) IsMaster() bool {
+	return conn.isMaster
+}
+
+func (conn *RedisConnection) GetAddress() string {
+	return conn.conn.RemoteAddr().String()
 }
 
 func (conn *RedisConnection) EnterPubSubMode() {
@@ -142,4 +152,26 @@ func (conn *RedisConnection) EnterPubSubMode() {
 
 func (conn *RedisConnection) ExitPubSubMode() {
 	conn.inPubSubMode = false
+}
+
+func (conn *RedisConnection) IsInPubSubMode() bool {
+	return conn.inPubSubMode
+}
+
+// SetUsername sets the username for this connection
+func (conn *RedisConnection) SetUsername(username string) {
+	conn.username = username
+}
+
+// GetUsername returns the username associated with this connection
+func (conn *RedisConnection) GetUsername() string {
+	return conn.username
+}
+
+func (conn *RedisConnection) IsAuthenticated() bool {
+	return conn.authenticated
+}
+
+func (conn *RedisConnection) SetAuthenticated(authenticated bool) {
+	conn.authenticated = authenticated
 }

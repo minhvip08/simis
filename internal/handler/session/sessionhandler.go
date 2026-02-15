@@ -15,4 +15,6 @@ var SessionHandlers = map[string]SessionHandler{
 	"WAIT":        &WaitHandler{},
 	"SUBSCRIBE":   &SubscribeHandler{},
 	"UNSUBSCRIBE": &UnsubscribeHandler{},
+	"ACL":         &ACLHandler{},
+	"AUTH":        &AuthHandler{},
 }

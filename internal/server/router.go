@@ -8,10 +8,16 @@ import (
 	"github.com/minhvip08/simis/internal/constants"
 	"github.com/minhvip08/simis/internal/handler/session"
 	"github.com/minhvip08/simis/internal/utils"
+
+	err "github.com/minhvip08/simis/internal/error"
 )
 
 func Route(conn *connection.RedisConnection, cmdName string, args []string) {
-	// TODO: Check Authentication
+	if !conn.IsAuthenticated() && cmdName != "AUTH" {
+		conn.SendResponse(fmt.Sprintf("-%s\r\n", err.ErrAuthenticationRequired.Error()))
+		return
+	}
+
 
 	if conn.IsInTransaction() && !isTransactionControlCommand(cmdName) {
 		queueCommand(conn, cmdName, args)
@@ -29,7 +35,6 @@ func Route(conn *connection.RedisConnection, cmdName string, args []string) {
 		return
 	}
 
-	// TODO Session Level
 	if handler, exists := session.SessionHandlers[cmdName]; exists {
 		// Create command object for the handler
 		cmd := connection.CreateCommand(cmdName, args...)

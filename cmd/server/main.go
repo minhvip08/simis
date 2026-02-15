@@ -24,7 +24,6 @@ func parseFlags() (int, config.ServerRole, string, string, string) {
 	var masterAddress string
 	var dir string
 	var dbfilename string
-	// TODO: add a flag for role (master/slave)
 
 	flag.IntVar(&port, "port", 6379, "The port to listen on")
 	flag.StringVar(&masterAddress, "replicaof", "", "The address of the master server (for slaves)")
@@ -83,7 +82,6 @@ func main() {
 		DBFileName:    dbfilename,
 	})
 
-	// TODO: Load RDB file
 	loadRDBFile(config.GetInstance())
 
 	command.GetQueueInstance()
