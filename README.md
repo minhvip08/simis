@@ -1,6 +1,6 @@
 # SimiS - Simple In-Memory Storage
 
-SimiS is a lightweight, high-performance in-memory data store similar to Redis, built with Go. It implements the Redis protocol (RESP2) and supports a wide range of data structures and operations.
+SimiS is a lightweight, high-performance in-memory data store similar to Redis, built with Go. It implements the Redis protocol and supports a wide range of data structures and operations.
 
 ## Features
 
@@ -170,7 +170,7 @@ SimiS is compatible with standard Redis clients:
 
 - **In-Memory Storage**: All data kept in RAM for fast access
 - **Single-Threaded Execution**: Avoids lock contention for data operations
-- **Efficient Serialization**: Fast RESP2 protocol parsing
+- **Efficient Serialization**: Fast RESP protocol parsing
 - **Concurrent Connections**: Multiple clients handled concurrently
 - **Background Persistence**: Non-blocking RDB snapshots
 
