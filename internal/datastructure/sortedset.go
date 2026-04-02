@@ -2,7 +2,6 @@ package datastructure
 
 import (
 	"cmp"
-	"sync"
 )
 
 type KeyValue struct {
@@ -18,7 +17,6 @@ func (kv KeyValue) Compare(other KeyValue) int {
 }
 
 type SortedSet struct {
-	mu       sync.RWMutex
 	skipList *SkipList[KeyValue]
 	score    map[string]float64
 }
@@ -41,26 +39,7 @@ func AsSortedSet(val RValue) (*SortedSet, bool) {
 	return nil, false
 }
 
-func (ss *SortedSet) Lock() {
-	ss.mu.Lock()
-}
-
-func (ss *SortedSet) Unlock() {
-	ss.mu.Unlock()
-}
-
-func (ss *SortedSet) RLock() {
-	ss.mu.RLock()
-}
-
-func (ss *SortedSet) RUnlock() {
-	ss.mu.RUnlock()
-}
-
 func (ss *SortedSet) Add(arg []KeyValue) int {
-	ss.Lock()
-	defer ss.Unlock()
-
 	count := 0
 	for _, kv := range arg {
 		if _, ok := ss.score[kv.Key]; !ok {
@@ -79,9 +58,6 @@ func (ss *SortedSet) Add(arg []KeyValue) int {
 }
 
 func (ss *SortedSet) GetRank(key string) int {
-	ss.RLock()
-	defer ss.RUnlock()
-
 	score, ok := ss.score[key]
 	if !ok {
 		return -1
@@ -95,8 +71,6 @@ func (ss *SortedSet) GetRank(key string) int {
 }
 
 func (ss *SortedSet) GetRange(start, end int) []KeyValue {
-	ss.RLock()
-	defer ss.RUnlock()
 
 	if start >= ss.skipList.Len() {
 		return []KeyValue{}
@@ -135,8 +109,6 @@ func (ss *SortedSet) GetRange(start, end int) []KeyValue {
 
 
 func (ss *SortedSet) GetRangeByValue(start float64, end float64) []KeyValue {
-	ss.RLock()
-	defer ss.RUnlock()
 
 	if start > end {
 		return []KeyValue{}
@@ -156,23 +128,17 @@ func (ss *SortedSet) GetRangeByValue(start float64, end float64) []KeyValue {
 }
 
 func (ss *SortedSet) GetCardinality() int {
-	ss.RLock()
-	defer ss.RUnlock()
 	
 	return ss.skipList.Len()
 }
 
 func (ss *SortedSet) GetScore(key string) (float64, bool) {
-	ss.RLock()
-	defer ss.RUnlock()
 
 	score, ok := ss.score[key]
 	return score, ok
 }
 
 func (ss *SortedSet) Remove(keys ...string) int {
-	ss.Lock()
-	defer ss.Unlock()
 
 	count := 0
 	for _, key := range keys {
