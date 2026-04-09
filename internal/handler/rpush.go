@@ -31,7 +31,10 @@ func parserPushParams(args []string) (*rPushParams, error) {
 func executeRPush(params *rPushParams) *ExecutionResult {
 	db := store.GetInstance()
 
-	dp, _ := db.LoadOrStoreList(params.key)
+	dp, _, oomErr := db.LoadOrStoreList(params.key)
+	if oomErr != nil {
+		return NewErrorResult(oomErr)
+	}
 
 	if dp == nil {
 		result := NewExecutionResult()

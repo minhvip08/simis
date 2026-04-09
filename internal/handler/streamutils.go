@@ -43,14 +43,14 @@ func parseXReadArgs(args []string) (timeout int, streamKeys []string, startIDs [
 	return timeout, streamKeys, startIDs, nil
 }
 
-// loadStreams loads or creates streams for the given keys.
+// loadStreams loads streams for the given keys. Returns an error if any key does not exist.
 func loadStreams(streamKeys []string) ([]*datastructure.Stream, error) {
 	db := store.GetInstance()
 	streams := make([]*datastructure.Stream, len(streamKeys))
 	for i, key := range streamKeys {
-		stream, _ := db.LoadOrStoreStream(key)
-		if stream == nil {
-			return nil, errors.New("failed to load or create stream")
+		stream, ok := db.GetStream(key)
+		if !ok {
+			return nil, errors.New("failed to load stream: key does not exist")
 		}
 		streams[i] = stream
 	}

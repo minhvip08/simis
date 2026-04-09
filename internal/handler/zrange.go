@@ -36,8 +36,8 @@ func parseZRange(args []string) (*zRangeParams, error) {
 }
 
 func executeZRange(params *zRangeParams) *ExecutionResult {
-	sortedSet, ok := store.GetInstance().LoadOrStoreSortedSet(params.key)
 	result := NewExecutionResult()
+	sortedSet, ok := store.GetInstance().GetSortedSet(params.key)
 	if !ok {
 		result.Response = utils.ToRespArray([]string{})
 		return result

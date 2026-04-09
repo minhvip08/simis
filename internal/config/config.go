@@ -9,24 +9,39 @@ import (
 	"github.com/minhvip08/simis/internal/utils"
 )
 
+type EvictionPolicy string
+
+const (
+	PolicyNoEviction     EvictionPolicy = "noeviction"
+	PolicyAllKeysLRU     EvictionPolicy = "allkeys-lru"
+	PolicyVolatileLRU    EvictionPolicy = "volatile-lru"
+	PolicyAllKeysRandom  EvictionPolicy = "allkeys-random"
+	PolicyVolatileRandom EvictionPolicy = "volatile-random"
+	PolicyVolatileTTL    EvictionPolicy = "volatile-ttl"
+)
+
 type Config struct {
-	Host          string
-	Port          int
-	Role          ServerRole
-	MasterHost    string
-	MasterPort    string
-	ReplicationID string
-	offset        atomic.Int64
-	Dir           string
-	DBFileName    string
+	Host           string
+	Port           int
+	Role           ServerRole
+	MasterHost     string
+	MasterPort     string
+	ReplicationID  string
+	offset         atomic.Int64
+	Dir            string
+	DBFileName     string
+	MaxMemory      int64
+	EvictionPolicy EvictionPolicy
 }
 
 type ConfigOptions struct {
-	Port          int
-	Role          ServerRole
-	MasterAddress string // ex: 127.0.0.1 6379
-	Dir           string
-	DBFileName    string
+	Port           int
+	Role           ServerRole
+	MasterAddress  string // ex: 127.0.0.1 6379
+	Dir            string
+	DBFileName     string
+	MaxMemory      int64
+	EvictionPolicy EvictionPolicy
 }
 
 var (
@@ -75,6 +90,16 @@ func Init(opts *ConfigOptions) {
 
 		if opts.DBFileName != "" {
 			instance.DBFileName = opts.DBFileName
+		}
+
+		if opts.MaxMemory > 0 {
+			instance.MaxMemory = opts.MaxMemory
+		}
+
+		if opts.EvictionPolicy != "" {
+			instance.EvictionPolicy = opts.EvictionPolicy
+		} else {
+			instance.EvictionPolicy = PolicyNoEviction
 		}
 
 	})

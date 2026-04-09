@@ -20,14 +20,13 @@ func parseZCard(args []string) (*zCardParams, error) {
 }
 
 func executeZCard(params *zCardParams) *ExecutionResult {
-	sortedSet, ok := store.GetInstance().LoadOrStoreSortedSet(params.key)
 	result := NewExecutionResult()
+	sortedSet, ok := store.GetInstance().GetSortedSet(params.key)
 	if !ok {
 		result.Response = utils.ToRespInt(0)
 		return result
 	}
-	cardinality := sortedSet.GetCardinality()
-	result.Response = utils.ToRespInt(cardinality)
+	result.Response = utils.ToRespInt(sortedSet.GetCardinality())
 	return result
 }
 

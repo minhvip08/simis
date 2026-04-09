@@ -29,8 +29,8 @@ func parseXRangeParams(args []string) (*xRagneParams, error) {
 
 func executeXRange(params *xRagneParams) *ExecutionResult {
 	db := store.GetInstance()
-	stream, _ := db.LoadOrStoreStream(params.key)
-	if stream == nil {
+	stream, ok := db.GetStream(params.key)
+	if !ok {
 		result := NewExecutionResult()
 		result.Error = err.ErrFailedToLoadOrStoreStream
 		return result

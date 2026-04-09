@@ -59,7 +59,10 @@ func parseGeoAdd(args []string) (*geoAddParams, error) {
 
 func executeGeoAdd(params *geoAddParams) *ExecutionResult {
 	db := store.GetInstance()
-	sortedSet, _ := db.LoadOrStoreSortedSet(params.key)
+	sortedSet, _, err := db.LoadOrStoreSortedSet(params.key)
+	if err != nil {
+		return NewErrorResult(err)
+	}
 	numAddedValues := sortedSet.Add(params.locations)
 	result := NewExecutionResult()
 	result.Response = utils.ToRespInt(numAddedValues)

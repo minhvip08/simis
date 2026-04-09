@@ -41,7 +41,10 @@ func parseZadd(args []string) (*zAddParams, error) {
 
 func executeZAdd(params *zAddParams) *ExecutionResult {
 	db := store.GetInstance()
-	sortedSet, _ := db.LoadOrStoreSortedSet(params.key)
+	sortedSet, _, err := db.LoadOrStoreSortedSet(params.key)
+	if err != nil {
+		return NewErrorResult(err)
+	}
 	numAddedValues := sortedSet.Add(params.kvList)
 	result := NewExecutionResult()
 	result.Response = utils.ToRespInt(numAddedValues)

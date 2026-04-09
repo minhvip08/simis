@@ -29,10 +29,13 @@ func parseXAddParams(args []string) (*xAddParams, error) {
 
 func executeXAdd(params *xAddParams) *ExecutionResult {
 	db := store.GetInstance()
-	stream, _ := db.LoadOrStoreStream(params.key)
+	stream, _, oomErr := db.LoadOrStoreStream(params.key)
 	result := NewExecutionResult()
+	if oomErr != nil {
+		result.Error = oomErr
+		return result
+	}
 	if stream == nil {
-
 		result.Error = err.ErrFailedToLoadOrStoreStream
 		return result
 	}

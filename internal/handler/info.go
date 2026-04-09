@@ -1,10 +1,12 @@
 package handler
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/minhvip08/simis/internal/config"
 	"github.com/minhvip08/simis/internal/connection"
+	"github.com/minhvip08/simis/internal/store"
 	"github.com/minhvip08/simis/internal/utils"
 )
 
@@ -17,7 +19,7 @@ type infoParams struct {
 
 func parseInfoParams(args []string) infoParams {
 	if len(args) > 0 {
-		return infoParams{section: args[0]}
+		return infoParams{section: strings.ToLower(args[0])}
 	}
 	return infoParams{section: ""}
 }
@@ -25,12 +27,27 @@ func parseInfoParams(args []string) infoParams {
 func executeInfo(params infoParams) *ExecutionResult {
 	cfg := config.GetInstance()
 	result := NewExecutionResult()
-	if strings.ToLower(params.section) == "replication" {
+
+	switch params.section {
+	case "replication":
 		result.Response = utils.ToBulkString(cfg.String())
-	} else {
+	case "memory":
+		result.Response = utils.ToBulkString(memoryInfoString(cfg))
+	default:
 		result.Response = utils.ToNullBulkString()
 	}
 	return result
+}
+
+func memoryInfoString(cfg *config.Config) string {
+	db := store.GetInstance()
+	return fmt.Sprintf(
+		"# Memory\nused_memory_heap:%d\nmaxmemory:%d\nmaxmemory_policy:%s\nmem_evictions:%d",
+		store.CurrentMemory(),
+		cfg.MaxMemory,
+		cfg.EvictionPolicy,
+		db.TotalEvictions(),
+	)
 }
 
 func (h *InfoHandler) Execute(cmd *connection.Command) *ExecutionResult {

@@ -37,7 +37,11 @@ func executeBLPop(params *bLPopParams) *ExecutionResult {
 	result := NewExecutionResult()
 
 	for _, key := range params.keys {
-		dp, _ := db.LoadOrStoreList(key)
+		dp, _, oomErr := db.LoadOrStoreList(key)
+		if oomErr != nil {
+			result.Error = oomErr
+			return result
+		}
 		if dp == nil {
 			result.Error = err.ErrFailedToLoadOrStoreList
 			return result

@@ -49,9 +49,6 @@ func parseSet(args []string) (*setParams, error) {
 func executeSet(params *setParams) *ExecutionResult {
 	kvObj := ds.NewStringObject(params.value)
 
-	db := store.GetInstance()
-	db.Store(params.key, &kvObj)
-
 	if params.hasExpiry {
 		switch params.expType {
 		case "EX":
@@ -63,7 +60,13 @@ func executeSet(params *setParams) *ExecutionResult {
 			result.Error = ErrInvalidArguments
 			return result
 		}
-		db.Store(params.key, &kvObj)
+	}
+
+	db := store.GetInstance()
+	if err := db.Store(params.key, &kvObj); err != nil {
+		result := NewExecutionResult()
+		result.Error = err
+		return result
 	}
 
 	result := NewExecutionResult()

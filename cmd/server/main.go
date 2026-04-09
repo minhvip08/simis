@@ -13,29 +13,43 @@ import (
 	"github.com/minhvip08/simis/internal/rdb"
 	"github.com/minhvip08/simis/internal/server"
 	"github.com/minhvip08/simis/internal/store"
+	"github.com/minhvip08/simis/internal/utils"
 )
 
 // Ensures gofmt doesn't remove the "net" and "os" imports in stage 1 (feel free to remove this!)
 var _ = net.Listen
 var _ = os.Exit
 
-func parseFlags() (int, config.ServerRole, string, string, string) {
+func parseFlags() (int, config.ServerRole, string, string, string, int64, config.EvictionPolicy) {
 	var port int
 	var masterAddress string
 	var dir string
 	var dbfilename string
+	var maxMemoryStr string
+	var evictionPolicyStr string
 
 	flag.IntVar(&port, "port", 6379, "The port to listen on")
 	flag.StringVar(&masterAddress, "replicaof", "", "The address of the master server (for slaves)")
 	flag.StringVar(&dir, "dir", "/tmp/redis-data", "The working directory")
 	flag.StringVar(&dbfilename, "dbfilename", "temp.rdb", "The name of the RDB file")
+	flag.StringVar(&maxMemoryStr, "maxmemory", "0", "Maximum memory limit (e.g. 100mb, 1gb); 0 disables the limit")
+	flag.StringVar(&evictionPolicyStr, "maxmemory-policy", "noeviction", "Eviction policy when maxmemory is reached")
 	flag.Parse()
 
 	role := config.Master
 	if masterAddress != "" {
 		role = config.Slave
 	}
-	return port, role, masterAddress, dir, dbfilename
+
+	maxMemory, err := utils.ParseMemorySize(maxMemoryStr)
+	if err != nil {
+		logger.Error("Invalid --maxmemory value, disabling memory limit", "value", maxMemoryStr, "error", err)
+		maxMemory = 0
+	}
+
+	evictionPolicy := config.EvictionPolicy(evictionPolicyStr)
+
+	return port, role, masterAddress, dir, dbfilename, maxMemory, evictionPolicy
 }
 
 func loadRDBFile(cfg *config.Config) {
@@ -73,13 +87,15 @@ func loadRDBFile(cfg *config.Config) {
 
 func main() {
 
-	port, role, masterAddress, dir, dbfilename := parseFlags()
+	port, role, masterAddress, dir, dbfilename, maxMemory, evictionPolicy := parseFlags()
 	config.Init(&config.ConfigOptions{
-		Port:          port,
-		Role:          role,
-		MasterAddress: masterAddress,
-		Dir:           dir,
-		DBFileName:    dbfilename,
+		Port:           port,
+		Role:           role,
+		MasterAddress:  masterAddress,
+		Dir:            dir,
+		DBFileName:     dbfilename,
+		MaxMemory:      maxMemory,
+		EvictionPolicy: evictionPolicy,
 	})
 
 	loadRDBFile(config.GetInstance())

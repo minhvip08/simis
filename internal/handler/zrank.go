@@ -24,9 +24,13 @@ func parseZRank(args []string) (*zRankParams, error) {
 }
 
 func executeZRank(params *zRankParams) *ExecutionResult {
-	sortedSet, _ := store.GetInstance().LoadOrStoreSortedSet(params.key)
-	rank := sortedSet.GetRank(params.member)
 	result := NewExecutionResult()
+	sortedSet, ok := store.GetInstance().GetSortedSet(params.key)
+	if !ok {
+		result.Response = utils.ToNullBulkString()
+		return result
+	}
+	rank := sortedSet.GetRank(params.member)
 	if rank < 0 {
 		result.Response = utils.ToNullBulkString()
 	} else {

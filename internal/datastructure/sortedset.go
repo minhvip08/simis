@@ -107,7 +107,6 @@ func (ss *SortedSet) GetRange(start, end int) []KeyValue {
 	return result
 }
 
-
 func (ss *SortedSet) GetRangeByValue(start float64, end float64) []KeyValue {
 
 	if start > end {
@@ -128,7 +127,7 @@ func (ss *SortedSet) GetRangeByValue(start float64, end float64) []KeyValue {
 }
 
 func (ss *SortedSet) GetCardinality() int {
-	
+
 	return ss.skipList.Len()
 }
 
