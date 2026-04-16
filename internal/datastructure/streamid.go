@@ -278,3 +278,25 @@ func ParseEndStreamID(s string) (StreamID, error) {
 
 	return StreamID{Ms: ms, Seq: seq}, nil
 }
+
+// ParseStreamID parses a string in the format "milliseconds-sequence".
+// This is a strict parser that requires both parts.
+func ParseStreamID(s string) (StreamID, error) {
+	s = strings.TrimSpace(s)
+	parts := strings.Split(s, "-")
+	if len(parts) != 2 {
+		return StreamID{}, ErrInvalidFormat
+	}
+
+	ms, err := strconv.ParseUint(parts[0], 10, 64)
+	if err != nil {
+		return StreamID{}, ErrInvalidFormat
+	}
+
+	seq, err := strconv.ParseUint(parts[1], 10, 64)
+	if err != nil {
+		return StreamID{}, ErrInvalidFormat
+	}
+
+	return StreamID{Ms: ms, Seq: seq}, nil
+}
